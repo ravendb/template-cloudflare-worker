@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SuggestionWithTerm = void 0;
+const SuggestionBase_1 = require("./SuggestionBase");
+class SuggestionWithTerm extends SuggestionBase_1.SuggestionBase {
+    constructor(field) {
+        super(field);
+    }
+}
+exports.SuggestionWithTerm = SuggestionWithTerm;

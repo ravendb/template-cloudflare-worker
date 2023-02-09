@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.serializeSqlEtlTable = void 0;
+function serializeSqlEtlTable(table) {
+    return {
+        TableName: table.tableName,
+        DocumentIdColumn: table.documentIdColumn,
+        InsertOnlyMode: table.insertOnlyMode
+    };
+}
+exports.serializeSqlEtlTable = serializeSqlEtlTable;

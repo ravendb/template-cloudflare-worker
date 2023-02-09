@@ -1,0 +1,4 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TIME_SERIES_ROLLUP_SEPARATOR = void 0;
+exports.TIME_SERIES_ROLLUP_SEPARATOR = "@";

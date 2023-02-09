@@ -1,0 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.IndexDefinitionBase = void 0;
+class IndexDefinitionBase {
+}
+exports.IndexDefinitionBase = IndexDefinitionBase;

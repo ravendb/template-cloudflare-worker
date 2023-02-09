@@ -1,0 +1,4 @@
+name = "" # todo
+main = "./src/index.ts"
+node_compat = true
+compatibility_date = "2022-05-03"

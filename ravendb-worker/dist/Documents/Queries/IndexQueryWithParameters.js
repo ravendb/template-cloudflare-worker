@@ -1,0 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.IndexQueryWithParameters = void 0;
+const IndexQueryBase_1 = require("./IndexQueryBase");
+class IndexQueryWithParameters extends IndexQueryBase_1.IndexQueryBase {
+}
+exports.IndexQueryWithParameters = IndexQueryWithParameters;

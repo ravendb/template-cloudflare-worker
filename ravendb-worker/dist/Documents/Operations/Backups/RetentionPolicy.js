@@ -1,0 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RetentionPolicy = void 0;
+class RetentionPolicy {
+}
+exports.RetentionPolicy = RetentionPolicy;

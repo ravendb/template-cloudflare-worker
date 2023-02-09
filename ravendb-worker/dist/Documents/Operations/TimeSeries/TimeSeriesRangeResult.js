@@ -1,0 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TimeSeriesRangeResult = void 0;
+class TimeSeriesRangeResult {
+}
+exports.TimeSeriesRangeResult = TimeSeriesRangeResult;

@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TimeSeriesIncludeBuilder = void 0;
+const IncludeBuilderBase_1 = require("./IncludeBuilderBase");
+class TimeSeriesIncludeBuilder extends IncludeBuilderBase_1.IncludeBuilderBase {
+    includeTags() {
+        this.includeTimeSeriesTags = true;
+        return this;
+    }
+    includeDocument() {
+        this.includeTimeSeriesDocument = true;
+        return this;
+    }
+}
+exports.TimeSeriesIncludeBuilder = TimeSeriesIncludeBuilder;

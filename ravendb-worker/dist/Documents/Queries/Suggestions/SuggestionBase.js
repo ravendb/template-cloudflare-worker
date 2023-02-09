@@ -1,0 +1,9 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SuggestionBase = void 0;
+class SuggestionBase {
+    constructor(field) {
+        this.field = field;
+    }
+}
+exports.SuggestionBase = SuggestionBase;

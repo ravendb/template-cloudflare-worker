@@ -1,0 +1,18 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.EtlConfiguration = void 0;
+const Transformation_1 = require("./Transformation");
+class EtlConfiguration {
+    serialize(conventions) {
+        return {
+            TaskId: this.taskId,
+            Name: this.name,
+            MentorName: this.mentorNode,
+            ConnectionStringName: this.connectionStringName,
+            Transforms: this.transforms.map(x => (0, Transformation_1.serializeTransformation)(x)),
+            Disabled: this.disabled,
+            AllowEtlOnNonEncryptedChannel: this.allowEtlOnNonEncryptedChannel
+        };
+    }
+}
+exports.EtlConfiguration = EtlConfiguration;

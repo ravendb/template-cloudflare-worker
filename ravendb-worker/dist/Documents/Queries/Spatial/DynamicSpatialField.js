@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DynamicSpatialField = void 0;
+class DynamicSpatialField {
+    roundTo(factor) {
+        this.roundFactor = factor;
+        return this;
+    }
+}
+exports.DynamicSpatialField = DynamicSpatialField;

@@ -1,0 +1,71 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ModifyConflictSolverOperation = void 0;
+const Exceptions_1 = require("../../Exceptions");
+const RavenCommand_1 = require("../../Http/RavenCommand");
+const RaftIdGenerator_1 = require("../../Utility/RaftIdGenerator");
+class ModifyConflictSolverOperation {
+    constructor(database, collectionByScript, resolveToLatest) {
+        this._database = database;
+        this._collectionByScript = collectionByScript;
+        this._resolveToLatest = resolveToLatest;
+    }
+    get resultType() {
+        return "CommandResult";
+    }
+    getCommand(conventions) {
+        return new ModifyConflictSolverCommand(conventions, this._database, this._collectionByScript, this._resolveToLatest);
+    }
+}
+exports.ModifyConflictSolverOperation = ModifyConflictSolverOperation;
+class ModifyConflictSolverCommand extends RavenCommand_1.RavenCommand {
+    constructor(conventions, database, collectionByScript, resolveToLatest) {
+        super();
+        if (!conventions) {
+            (0, Exceptions_1.throwError)("InvalidArgumentException", "Conventions cannot be null");
+        }
+        if (!database) {
+            (0, Exceptions_1.throwError)("InvalidArgumentException", "Database cannot be null");
+        }
+        this._database = database;
+        this._conventions = conventions;
+        this._collectionByScript = collectionByScript;
+        this._resolveToLatest = resolveToLatest || false;
+    }
+    createRequest(node) {
+        const uri = node.url + "/admin/replication/conflicts/solver?name=" + encodeURIComponent(this._database);
+        const body = this._serializer.serialize({
+            ResolveToLatest: this._resolveToLatest,
+            ResolveByCollection: this._collectionByScript
+        });
+        return {
+            uri,
+            method: "POST",
+            headers: this._headers().typeAppJson().build(),
+            body
+        };
+    }
+    get isReadRequest() {
+        return false;
+    }
+    setResponseAsync(bodyStream, fromCache) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!bodyStream) {
+                this._throwInvalidResponse();
+            }
+            return this._parseResponseDefaultAsync(bodyStream);
+        });
+    }
+    getRaftUniqueRequestId() {
+        return RaftIdGenerator_1.RaftIdGenerator.newId();
+    }
+}

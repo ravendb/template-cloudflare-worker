@@ -1,0 +1,9 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.FacetBase = void 0;
+class FacetBase {
+    constructor() {
+        this.aggregations = new Map();
+    }
+}
+exports.FacetBase = FacetBase;

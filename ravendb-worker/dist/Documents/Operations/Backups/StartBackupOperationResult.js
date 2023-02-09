@@ -1,0 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.StartBackupOperationResult = void 0;
+class StartBackupOperationResult {
+}
+exports.StartBackupOperationResult = StartBackupOperationResult;

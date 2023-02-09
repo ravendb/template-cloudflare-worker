@@ -1,0 +1,12 @@
+/// <reference types="node" />
+import { StreamResult } from "../Commands/StreamResult";
+import { TypedEventEmitter } from "../../Primitives/Events";
+import { StreamQueryStatistics } from "./StreamQueryStatistics";
+export interface DocumentStreamResultEvents<TEntity extends object> {
+    data: StreamResult<TEntity>;
+    error: Error;
+    stats: StreamQueryStatistics;
+    end: void;
+}
+export interface DocumentResultStream<T extends object> extends TypedEventEmitter<DocumentStreamResultEvents<T>>, NodeJS.ReadableStream {
+}

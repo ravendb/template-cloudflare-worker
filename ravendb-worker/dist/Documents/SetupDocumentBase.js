@@ -1,0 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SetupDocumentBase = void 0;
+class SetupDocumentBase {
+}
+exports.SetupDocumentBase = SetupDocumentBase;

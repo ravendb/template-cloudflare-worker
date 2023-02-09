@@ -1,0 +1,70 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GetReplicationHubAccessOperation = void 0;
+const RavenCommand_1 = require("../../../Http/RavenCommand");
+const StringUtil_1 = require("../../../Utility/StringUtil");
+const Exceptions_1 = require("../../../Exceptions");
+class GetReplicationHubAccessOperation {
+    constructor(hubName, start = 0, pageSize = 25) {
+        this._hubName = hubName;
+        this._start = start;
+        this._pageSize = pageSize;
+    }
+    getCommand(conventions) {
+        return new GetReplicationHubAccessCommand(conventions, this._hubName, this._start, this._pageSize);
+    }
+    get resultType() {
+        return "CommandResult";
+    }
+}
+exports.GetReplicationHubAccessOperation = GetReplicationHubAccessOperation;
+class GetReplicationHubAccessCommand extends RavenCommand_1.RavenCommand {
+    constructor(conventions, hubName, start, pageSize) {
+        super();
+        if (StringUtil_1.StringUtil.isNullOrWhitespace(hubName)) {
+            (0, Exceptions_1.throwError)("InvalidArgumentException", "Value cannot be null or whitespace.");
+        }
+        this._conventions = conventions;
+        this._hubName = hubName;
+        this._start = start;
+        this._pageSize = pageSize;
+    }
+    get isReadRequest() {
+        return true;
+    }
+    createRequest(node) {
+        const uri = node.url + "/databases/" + node.database
+            + "/admin/tasks/pull-replication/hub/access?name=" + this._urlEncode(this._hubName)
+            + "&start=" + this._start
+            + "&pageSize=" + this._pageSize;
+        return {
+            uri,
+            method: "GET"
+        };
+    }
+    setResponseAsync(bodyStream, fromCache) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!bodyStream) {
+                return;
+            }
+            let body = null;
+            const rawResults = yield this._defaultPipeline(_ => body = _).process(bodyStream);
+            this.result = this._conventions.objectMapper.fromObjectLiteral(rawResults, {
+                nestedTypes: {
+                    "results[].notAfter": "date",
+                    "results[].notBefore": "date"
+                }
+            }).results;
+            return body;
+        });
+    }
+}

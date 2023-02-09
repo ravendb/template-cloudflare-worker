@@ -1,0 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AbstractTimeSeriesIndexCreationTask = void 0;
+const AbstractCsharpCountersIndexCreationTask_1 = require("../Counters/AbstractCsharpCountersIndexCreationTask");
+class AbstractTimeSeriesIndexCreationTask extends AbstractCsharpCountersIndexCreationTask_1.AbstractCsharpCountersIndexCreationTask {
+}
+exports.AbstractTimeSeriesIndexCreationTask = AbstractTimeSeriesIndexCreationTask;

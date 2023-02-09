@@ -1,0 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RevisionsResult = void 0;
+class RevisionsResult {
+}
+exports.RevisionsResult = RevisionsResult;

@@ -1,0 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.QueryResultBase = void 0;
+class QueryResultBase {
+}
+exports.QueryResultBase = QueryResultBase;

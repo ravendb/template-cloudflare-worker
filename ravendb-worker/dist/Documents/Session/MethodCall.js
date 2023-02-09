@@ -1,0 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MethodCall = void 0;
+class MethodCall {
+}
+exports.MethodCall = MethodCall;

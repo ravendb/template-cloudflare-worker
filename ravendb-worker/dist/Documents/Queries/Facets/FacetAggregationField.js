@@ -1,0 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.FacetAggregationField = void 0;
+class FacetAggregationField {
+}
+exports.FacetAggregationField = FacetAggregationField;

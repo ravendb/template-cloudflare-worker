@@ -1,0 +1,67 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GetRevisionsOperation = void 0;
+const RevisionsResult_1 = require("./RevisionsResult");
+const RavenCommand_1 = require("../../../Http/RavenCommand");
+const GetRevisionsCommand_1 = require("../../Commands/GetRevisionsCommand");
+class GetRevisionsOperation {
+    constructor(id, parameters = {}) {
+        this._id = id;
+        this._parameters = parameters;
+    }
+    get resultType() {
+        return "CommandResult";
+    }
+    getCommand(store, conventions, httpCache) {
+        return new GetRevisionsResultCommand(this._id, this._parameters, conventions);
+    }
+}
+exports.GetRevisionsOperation = GetRevisionsOperation;
+class GetRevisionsResultCommand extends RavenCommand_1.RavenCommand {
+    constructor(id, parameters, conventions) {
+        super();
+        this.conventions = conventions;
+        this._id = id;
+        this._parameters = parameters;
+        this._cmd = new GetRevisionsCommand_1.GetRevisionsCommand(conventions, id, parameters.start || 0, parameters.pageSize);
+    }
+    get isReadRequest() {
+        return true;
+    }
+    createRequest(node) {
+        return this._cmd.createRequest(node);
+    }
+    setResponseAsync(bodyStream, fromCache) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!bodyStream) {
+                return;
+            }
+            let body;
+            const responseNode = yield this._pipeline()
+                .parseJsonSync()
+                .collectBody(b => body = b)
+                .process(bodyStream);
+            if (!responseNode.Results) {
+                return body;
+            }
+            const revisions = responseNode.Results;
+            const total = responseNode.TotalResults;
+            const result = new RevisionsResult_1.RevisionsResult();
+            result.totalResults = total;
+            result.results = revisions.filter(x => x).map(x => {
+                const entityType = this.conventions.getJsTypeByDocumentType(this._parameters.documentType);
+                return this.conventions.deserializeEntityFromJson(entityType, x);
+            });
+            this.result = result;
+        });
+    }
+}

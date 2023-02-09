@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ConfigureRawTimeSeriesPolicyOperation = void 0;
+const ConfigureTimeSeriesPolicyOperation_1 = require("./ConfigureTimeSeriesPolicyOperation");
+class ConfigureRawTimeSeriesPolicyOperation extends ConfigureTimeSeriesPolicyOperation_1.ConfigureTimeSeriesPolicyOperation {
+    constructor(collection, config) {
+        super(collection, config);
+    }
+}
+exports.ConfigureRawTimeSeriesPolicyOperation = ConfigureRawTimeSeriesPolicyOperation;

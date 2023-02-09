@@ -1,0 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TypedTimeSeriesRangeAggregation = void 0;
+class TypedTimeSeriesRangeAggregation {
+}
+exports.TypedTimeSeriesRangeAggregation = TypedTimeSeriesRangeAggregation;
