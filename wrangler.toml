@@ -1,4 +1,22 @@
-name = "" # todo
+name = "ravendb-worker"
 main = "./src/index.ts"
 node_compat = true
 compatibility_date = "2022-05-03"
+
+unsafe.bindings = [
+  { type = "mtls_certificate", name = "DB_CERT", certificate_id = "<certificate_id_from_cf>" }
+]
+
+# Define top-level environment variables
+# under the `[vars]` block using
+# the `key = "value"` format
+[vars]
+DB_URLS = "http://live-test.ravendb.net"
+DB_NAME = ""
+
+# Override values for `--env production` usage
+[env.production]
+name = "ravendb-worker-production"
+[env.production.vars]
+DB_URLS = "http://live-test.ravendb.net"
+DB_NAME = ""
