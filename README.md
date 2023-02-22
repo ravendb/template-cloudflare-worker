@@ -26,12 +26,11 @@ $ npm start
 
 ## Getting Started
 
-RavenDB is a NoSQL distributed database platform designed for business applications.
+RavenDB is a business continuity database for distributed applications offering industry-leading security with sub-100ms query performance.
 
-> The easiest way to get started with RavenDB is by creating [a free RavenDB Cloud account](cloud-signup). 
+> The easiest way to get started with RavenDB is by creating [a free RavenDB Cloud account](cloud-signup).
 >
 > If you are _brand new_ to RavenDB, we recommend starting with the [Getting Started guide](docs-get-started), the [RavenDB bootcamp](learn-bootcamp), or the [Try RavenDB](learn-demo) experience.
-
 
 You do not need a certificate to connect to the demo server at http://live-test.ravendb.net. Data is wiped everyday so it's perfect for testing.
 
@@ -120,11 +119,15 @@ Wrangler must be run in _non-local mode_ to populate the certificate binding env
 
 When Wrangler boots up, press the `l` key to enter non-local mode, which will restart Wrangler and show a message like this:
 
-TBD
+```
+Shutting down local server.
+```
 
-[cloud-signup]: https://cloud.ravendb.net?utm_source=github&utm_medium=web&utm_campaign=oss_cloudflare_worker_template&utm_content=ravendb_cloud_signup
-[docs-get-started]: https://ravendb.net/docs/article-page/csharp/start/getting-started?utm_source=github&utm_medium=web&utm_campaign=oss_cloudflare_worker_template&utm_content=get_started
-[docs-create-db]: https://ravendb.net/docs/article-page/csharp/studio/database/create-new-database/general-flow?utm_source=github&utm_medium=web&utm_campaign=oss_cloudflare_worker_template&utm_content=docs_new_db
-[learn-bootcamp]: https://ravendb.net/learn/bootcamp?utm_source=github&utm_medium=web&utm_campaign=oss_cloudflare_worker_template&utm_content=ravendb_bootcamp_signup
-[learn-demo]: https://demo.ravendb.net/?utm_source=github&utm_medium=web&utm_campaign=oss_cloudflare_worker_template&utm_content=ravendb_try
+You may need to authenticate Wrangler again to your Cloudflare account.
+
+[cloud-signup]: https://cloud.ravendb.net?utm_source=github&utm_medium=web&utm_campaign=github_template_cloudflare_worker&utm_content=cloud_signup
+[docs-get-started]: https://ravendb.net/docs/article-page/csharp/start/getting-started?utm_source=github&utm_medium=web&utm_campaign=github_template_cloudflare_worker&utm_content=docs_get_started
+[docs-create-db]: https://ravendb.net/docs/article-page/csharp/studio/database/create-new-database/general-flow?utm_source=github&utm_medium=web&utm_campaign=github_template_cloudflare_worker&utm_content=docs_new_db
+[learn-bootcamp]: https://ravendb.net/learn/bootcamp?utm_source=github&utm_medium=web&utm_campaign=github_template_cloudflare_worker&utm_content=learn_bootcamp
+[learn-demo]: https://demo.ravendb.net/?utm_source=github&utm_medium=web&utm_campaign=github_template_cloudflare_worker&utm_content=learn_demo
 [cf-env]: https://developers.cloudflare.com/workers/platform/environment-variables/
