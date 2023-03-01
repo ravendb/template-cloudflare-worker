@@ -72,10 +72,18 @@ Next, unzip it and copy the paths to the `.crt` and `.key` files, since you will
 Finally, in the project directory, run:
 
 ```sh
-$ wrangler mtls add --name DB_CERT --cert ./path/to/certificate.crt --key ./path/to/certificate.key
+$ wrangler mtls-certificate upload --name db-cert --cert /path/to/certificate.pem --key /path/to/certificate.key
 ```
 
-This will update your `wrangler.toml` file to add a new certificate binding `DB_CERT` which RavenDB will use to access the database securely.
+This will upload an mTLS certificate to your Cloudflare account.
+
+List the certificates to copy the Certificate ID:
+
+```sh
+$ wrangler mtls-certificate list
+```
+
+Next, update your `wrangler.toml` file to add a new certificate binding `DB_CERT` which RavenDB will use to access the database securely.
 
 ```toml
 unsafe.bindings = [
