@@ -1,4 +1,4 @@
-# Template: worker-ravendb
+# RavenDB Cloudflare Worker Template (TypeScript)
 
 [![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/ravendb/template-cloudflare-worker)
 
