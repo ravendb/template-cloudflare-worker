@@ -32,7 +32,7 @@ $ npm start
 
 ## Configuring the Template
 
-Watch the video walkthrough tutorial or read through the step-by-step guide in the RavenDB docs that covers how to get up and running successfully with this template.
+Watch the video walkthrough tutorial or read through [the step-by-step guide in the RavenDB docs][docs-howto] that covers how to get up and running successfully with this template.
 
 [cloud-signup]: https://cloud.ravendb.net?utm_source=github&utm_medium=web&utm_campaign=github_template_cloudflare_worker&utm_content=cloud_signup
 [docs-get-started]: https://ravendb.net/docs/article-page/csharp/start/getting-started?utm_source=github&utm_medium=web&utm_campaign=github_template_cloudflare_worker&utm_content=docs_get_started
