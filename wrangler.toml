@@ -3,8 +3,8 @@ main = "./src/index.ts"
 node_compat = true
 compatibility_date = "2022-05-03"
 
-unsafe.bindings = [
-  { type = "mtls_certificate", name = "DB_CERT", certificate_id = "<certificate_id_from_cf>" }
+mtls_certificates = [
+  { binding = "DB_CERT", certificate_id = "<CERTIFICATE_ID>" } 
 ]
 
 # Define top-level environment variables
