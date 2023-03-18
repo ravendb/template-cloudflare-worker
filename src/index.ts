@@ -10,9 +10,9 @@ router.get('/', async (request: IRequest, env: Env) => {
 	const currentNode = await env.db.advanced.getCurrentSessionNode();
 
 	return new Response(
-		`request method: ${request.method}, CF data center: ${request.cf?.colo} (${
+		`Request method: ${request.method}, CF data center: ${request.cf?.colo} (${
 			(request.cf as any)?.regionCode
-		}), using closest db node tag: ${currentNode?.clusterTag}`
+		}), Connected to RavenDB node: ${currentNode?.clusterTag}`
 	);
 });
 
