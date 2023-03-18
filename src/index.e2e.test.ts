@@ -7,7 +7,11 @@ describe('Worker', () => {
 
 	beforeAll(async () => {
 		worker = await unstable_dev('src/index.ts', {
+			// Use the local Wrangler config
 			config: 'wrangler.toml',
+			// Disable local mode to enable an e2e test
+			// since the presence of an mTLS certificate
+			// binding will result in accessing RavenDB
 			local: false,
 			experimental: { disableExperimentalWarning: true },
 		});
