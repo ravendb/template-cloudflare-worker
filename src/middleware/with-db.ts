@@ -1,6 +1,6 @@
 import { IRequest } from 'itty-router';
 
-import { bindFetcherToStore, initializeDb } from '../db';
+import { initializeDb } from '../db';
 import { Env } from '../types';
 
 export const withDb = (request: IRequest, env: Env) => {
@@ -10,12 +10,7 @@ export const withDb = (request: IRequest, env: Env) => {
 		);
 	}
 
-	const dbStore = initializeDb(env.DB_URLS.split(','), env.DB_NAME);
-
-	if (env.DB_CERT?.fetch) {
-		console.info('A bound cert was found and will be used for RavenDB requests.');
-		bindFetcherToStore(env.DB_CERT.fetch.bind(env.DB_CERT), dbStore);
-	}
+	const dbStore = initializeDb(env.DB_URLS.split(','), env.DB_NAME, env.DB_CERT);
 
 	const dbSession = dbStore.openSession();
 	env.db = dbSession;

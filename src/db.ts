@@ -1,30 +1,29 @@
-import {
-	CreateDatabaseOperation,
-	GetDatabaseRecordOperation,
-	DatabaseRecord,
-	IDocumentStore,
-	SessionOptions,
-} from 'ravendb';
+import { SessionOptions } from 'ravendb';
 import { DocumentStore } from 'ravendb';
 
 let store: DocumentStore;
 let initialized = false;
 
-export function initializeDb(urls: string[], dbName: string) {
+export function initializeDb(
+	urls: string[],
+	dbName: string,
+	fetchBinding?: { fetch: typeof fetch }
+) {
 	if (initialized) return store;
 
 	store = new DocumentStore(urls, dbName);
+
+	// Support for Cloudflare mTLS bindings
+	if (fetchBinding) {
+		console.info('A bound cert was found and will be used for RavenDB requests.');
+		store.conventions.customFetch = fetchBinding.fetch.bind(fetchBinding);
+	}
+
 	store.initialize();
 
 	initialized = true;
 
 	return store;
-}
-
-export function bindFetcherToStore(fetcher: typeof fetch, store: IDocumentStore) {
-	store.getRequestExecutor().customHttpRequestOptions = {
-		fetcher: fetcher as any,
-	};
 }
 
 export function openDbSession(opts?: SessionOptions) {
