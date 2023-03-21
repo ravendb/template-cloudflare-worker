@@ -37,7 +37,7 @@ class AddDatabaseNodeCommand extends RavenCommand_1.RavenCommand {
     }
     createRequest(node) {
         let uri = node.url + "/admin/databases/node?name=" + this._databaseName;
-        if (node) {
+        if (this._node) {
             uri += "&node=" + this._node;
         }
         return {

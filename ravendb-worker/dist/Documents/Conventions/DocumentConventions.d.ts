@@ -48,6 +48,7 @@ export declare class DocumentConventions {
     private _localEntityFieldNameConvention;
     private _remoteEntityFieldNameConvention;
     private _objectMapper;
+    private _customFetch;
     private _dateUtil;
     private _syncJsonParseLimit;
     private _useCompression;
@@ -65,6 +66,8 @@ export declare class DocumentConventions {
     set firstBroadcastAttemptTimeout(firstBroadcastAttemptTimeout: number);
     get objectMapper(): TypesAwareObjectMapper;
     set objectMapper(value: TypesAwareObjectMapper);
+    get customFetch(): any;
+    set customFetch(customFetch: any);
     get syncJsonParseLimit(): number;
     set syncJsonParseLimit(value: number);
     get dateUtil(): DateUtil;

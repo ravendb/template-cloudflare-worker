@@ -122,6 +122,7 @@ class SingleNodeBatchCommand extends RavenCommand_1.RavenCommand {
                 .objectKeysTransform({
                 defaultTransform: "camel",
                 ignoreKeys: [/^@/],
+                ignorePaths: [/results\.\[\]\.modifiedDocument\./i],
             })
                 .process(bodyStream);
             return body;

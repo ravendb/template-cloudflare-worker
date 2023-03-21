@@ -7,7 +7,7 @@ class EtlConfiguration {
         return {
             TaskId: this.taskId,
             Name: this.name,
-            MentorName: this.mentorNode,
+            MentorNode: this.mentorNode,
             ConnectionStringName: this.connectionStringName,
             Transforms: this.transforms.map(x => (0, Transformation_1.serializeTransformation)(x)),
             Disabled: this.disabled,

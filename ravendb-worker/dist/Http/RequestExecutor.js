@@ -40,6 +40,7 @@ const events_1 = require("events");
 const SessionEvents_1 = require("../Documents/Session/SessionEvents");
 const TimeUtil_1 = require("../Utility/TimeUtil");
 const UpdateTopologyParameters_1 = require("./UpdateTopologyParameters");
+const uuid_1 = require("uuid");
 const DatabaseHealthCheckOperation_1 = require("../Documents/Operations/DatabaseHealthCheckOperation");
 const DEFAULT_REQUEST_OPTIONS = {};
 const log = (0, LogUtil_1.getLogger)({ module: "RequestExecutor" });
@@ -187,13 +188,40 @@ class RequestExecutor {
             : null;
     }
     getHttpAgent() {
+        if (this.conventions.customFetch) {
+            return null;
+        }
         if (this._httpAgent) {
             return this._httpAgent;
         }
         return this._httpAgent = this._createHttpAgent();
     }
     _createHttpAgent() {
-        return null;
+        if (this._certificate) {
+            const agentOptions = this._certificate.toAgentOptions();
+            const cacheKey = JSON.stringify(agentOptions, null, 0);
+            if (RequestExecutor.HTTPS_AGENT_CACHE.has(cacheKey)) {
+                return RequestExecutor.HTTPS_AGENT_CACHE.get(cacheKey);
+            }
+            else {
+                const https = require("https");
+                const agent = new https.Agent(Object.assign({ keepAlive: true }, agentOptions));
+                RequestExecutor.HTTPS_AGENT_CACHE.set(cacheKey, agent);
+                return agent;
+            }
+        }
+        else {
+            RequestExecutor.assertKeepAliveAgent();
+            return RequestExecutor.KEEP_ALIVE_HTTP_AGENT;
+        }
+    }
+    static assertKeepAliveAgent() {
+        if (!RequestExecutor.KEEP_ALIVE_HTTP_AGENT) {
+            const http = require("http");
+            RequestExecutor.KEEP_ALIVE_HTTP_AGENT = new http.Agent({
+                keepAlive: true
+            });
+        }
     }
     getTopologyNodes() {
         const topology = this.getTopology();
@@ -204,9 +232,15 @@ class RequestExecutor {
     static create(initialUrls, database, opts) {
         const { authOptions, documentConventions } = opts || {};
         const executor = new RequestExecutor(database, authOptions, documentConventions);
-        executor._firstTopologyUpdatePromise = executor._firstTopologyUpdate(initialUrls, this.GLOBAL_APPLICATION_IDENTIFIER);
+        executor._firstTopologyUpdatePromise = executor._firstTopologyUpdate(initialUrls, RequestExecutor.getGlobalApplicationIdentifier());
         executor._firstTopologyUpdatePromise.catch(TypeUtil_1.TypeUtil.NOOP);
         return executor;
+    }
+    static getGlobalApplicationIdentifier() {
+        if (!this.GLOBAL_APPLICATION_IDENTIFIER) {
+            this.GLOBAL_APPLICATION_IDENTIFIER = (0, uuid_1.v4)();
+        }
+        return this.GLOBAL_APPLICATION_IDENTIFIER;
     }
     static createForSingleNodeWithConfigurationUpdates(url, database, opts) {
         const executor = this.createForSingleNodeWithoutConfigurationUpdates(url, database, opts);
@@ -876,6 +910,9 @@ class RequestExecutor {
         if (!request) {
             return null;
         }
+        if (this.conventions.customFetch) {
+            request.fetcher = this.conventions.customFetch;
+        }
         const req = Object.assign(request, this._defaultRequestOptions);
         urlRef(req.uri);
         req.headers = req.headers || {};
@@ -1330,12 +1367,14 @@ class RequestExecutor {
     }
 }
 exports.RequestExecutor = RequestExecutor;
-RequestExecutor.GLOBAL_APPLICATION_IDENTIFIER = "aaa";
+RequestExecutor.GLOBAL_APPLICATION_IDENTIFIER = null;
 RequestExecutor.INITIAL_TOPOLOGY_ETAG = -2;
 RequestExecutor.CLIENT_VERSION = "5.2.0";
 RequestExecutor._backwardCompatibilityFailureCheckOperation = new GetStatisticsOperation_1.GetStatisticsOperation("failure=check");
 RequestExecutor._failureCheckOperation = new DatabaseHealthCheckOperation_1.DatabaseHealthCheckOperation();
 RequestExecutor._useOldFailureCheckOperation = new Set();
+RequestExecutor.KEEP_ALIVE_HTTP_AGENT = null;
+RequestExecutor.HTTPS_AGENT_CACHE = new Map();
 RequestExecutor.requestPostProcessor = null;
 class BroadcastState {
 }

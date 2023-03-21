@@ -232,7 +232,7 @@ class AbstractDocumentQuery extends events_1.EventEmitter {
         tokens.push(NegateToken_1.NegateToken.INSTANCE);
     }
     _usingDefaultOperator(operator) {
-        if (!this._whereTokens || !this._whereTokens.length) {
+        if (!this._whereTokens || !!this._whereTokens.length) {
             (0, Exceptions_1.throwError)("InvalidOperationException", "Default operator can only be set before any where clause is added.");
         }
         this._defaultOperator = operator;

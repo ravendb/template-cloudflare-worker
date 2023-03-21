@@ -7,7 +7,7 @@ import { HttpRequestParameters } from "../../../Primitives/Http";
 import { IRaftCommand } from "../../../Http/IRaftCommand";
 export declare class SetIndexesPriorityOperation implements IMaintenanceOperation<void> {
     private readonly _parameters;
-    constructor(indexName: string, mode: IndexPriority);
+    constructor(indexName: string, priority: IndexPriority);
     constructor(parameters: SetIndexesPriorityOperationParameters);
     getCommand(conventions: DocumentConventions): RavenCommand<void>;
     get resultType(): OperationResultType;

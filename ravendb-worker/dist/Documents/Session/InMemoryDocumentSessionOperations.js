@@ -1148,12 +1148,11 @@ class InMemoryDocumentSessionOperations extends events_1.EventEmitter {
             }
             for (const prop of Object.keys(documentInfo.metadataInstance)) {
                 const propValue = documentInfo.metadataInstance[prop];
-                if (!propValue ||
-                    (typeof propValue["isDirty"] === "function"
-                        && propValue.isDirty())) {
+                if (propValue && (typeof propValue["isDirty"] === "function"
+                    && propValue.isDirty())) {
                     dirty = true;
                 }
-                documentInfo.metadata[prop] = ObjectUtil_1.ObjectUtil.deepJsonClone(documentInfo.metadataInstance[prop]);
+                documentInfo.metadata[prop] = ObjectUtil_1.ObjectUtil.deepJsonClone(propValue);
             }
         }
         return dirty;

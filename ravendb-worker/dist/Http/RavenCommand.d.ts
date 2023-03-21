@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { ServerNode } from "./ServerNode";
 import { HttpCache } from "../Http/HttpCache";
 import * as stream from "readable-stream";
@@ -9,6 +10,7 @@ import { TypeInfo } from "../Mapping/ObjectMapper";
 import { JsonSerializer } from "../Mapping/Json/Serializer";
 import { RavenCommandResponsePipeline } from "./RavenCommandResponsePipeline";
 import { DocumentConventions } from "../Documents/Conventions/DocumentConventions";
+import * as http from "http";
 import { ObjectTypeDescriptor } from "../Types";
 export declare type RavenCommandResponse = string | Response;
 export declare type RavenCommandResponseType = "Empty" | "Object" | "Raw";
@@ -39,10 +41,11 @@ export declare abstract class RavenCommand<TResult> {
     setResponseFromCache(cachedValue: string): Promise<void>;
     protected _defaultPipeline<T = TResult>(bodyCallback?: (body: string) => void): RavenCommandResponsePipeline<T>;
     setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string>;
-    send(agent: any, requestOptions: HttpRequestParameters): Promise<{
+    send(agent: http.Agent, requestOptions: HttpRequestParameters): Promise<{
         response: HttpResponse;
         bodyStream: stream.Readable;
     }>;
+    private static maybeWrapBody;
     setResponseRaw(response: HttpResponse, body: string): void;
     protected _urlEncode(value: any): string;
     static ensureIsNotNullOrEmpty(value: string, name: string): void;

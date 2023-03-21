@@ -92,6 +92,7 @@ class RavenCommandResponsePipeline extends events_1.EventEmitter {
         const opts = this._opts;
         const streams = [src];
         if (opts.collectBody) {
+            src.on("data", (chunk) => this._appendBody(chunk));
         }
         if (opts.jsonAsync) {
             const parser = new Parser({ streamValues: false });
@@ -155,6 +156,14 @@ class RavenCommandResponsePipeline extends events_1.EventEmitter {
             resultPromise = collectResult.promise;
         }
         if (opts.collectBody) {
+            resultPromise
+                .then(() => {
+                const body = this._body.toString();
+                this.emit("body", body);
+                if (typeof opts.collectBody === "function") {
+                    opts.collectBody(body);
+                }
+            });
         }
         return StreamUtil.pipelineAsync(...streams)
             .then(() => resultPromise);

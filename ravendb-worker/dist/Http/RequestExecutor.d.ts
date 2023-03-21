@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { ServerNode } from "./ServerNode";
 import { RavenCommand } from "./RavenCommand";
 import { Topology } from "./Topology";
@@ -12,6 +13,7 @@ import { HttpRequestParameters, HttpRequestParametersWithoutUri } from "../Primi
 import { DocumentConventions } from "../Documents/Conventions/DocumentConventions";
 import { SessionInfo } from "../Documents/Session/IDocumentSession";
 import { PromiseStatusTracker } from "../Utility/PromiseUtil";
+import type * as http from "http";
 import AbortController from "abort-controller";
 import { BeforeRequestEventArgs, FailedRequestEventArgs, SucceedRequestEventArgs, TopologyUpdatedEventArgs } from "../Documents/Session/SessionEvents";
 import { UpdateTopologyParameters } from "./UpdateTopologyParameters";
@@ -47,7 +49,7 @@ export declare class NodeStatus implements IDisposable {
 }
 export declare class RequestExecutor implements IDisposable {
     private _emitter;
-    private static readonly GLOBAL_APPLICATION_IDENTIFIER;
+    private static GLOBAL_APPLICATION_IDENTIFIER;
     private static readonly INITIAL_TOPOLOGY_ETAG;
     private _log;
     static readonly CLIENT_VERSION = "5.2.0";
@@ -70,6 +72,8 @@ export declare class RequestExecutor implements IDisposable {
     protected _disposed: boolean;
     private _firstTopologyUpdatePromiseInternal;
     private _httpAgent;
+    private static KEEP_ALIVE_HTTP_AGENT;
+    private static readonly HTTPS_AGENT_CACHE;
     protected get _firstTopologyUpdatePromise(): Promise<void>;
     protected set _firstTopologyUpdatePromise(value: Promise<void>);
     protected _firstTopologyUpdateStatus: PromiseStatusTracker<void>;
@@ -112,12 +116,14 @@ export declare class RequestExecutor implements IDisposable {
     get disposed(): boolean;
     getUrl(): string;
     getTopology(): Topology;
-    getHttpAgent(): any;
+    getHttpAgent(): http.Agent;
     private _createHttpAgent;
+    private static assertKeepAliveAgent;
     getTopologyNodes(): ServerNode[];
     protected constructor(database: string, authOptions: IRequestAuthOptions, conventions: DocumentConventions);
     static create(initialUrls: string[], database: string): RequestExecutor;
     static create(initialUrls: string[], database: string, opts?: IRequestExecutorOptions): RequestExecutor;
+    private static getGlobalApplicationIdentifier;
     static createForSingleNodeWithConfigurationUpdates(url: string, database: string, opts: IRequestExecutorOptions): RequestExecutor;
     static createForSingleNodeWithoutConfigurationUpdates(url: string, database: string, opts: IRequestExecutorOptions): RequestExecutor;
     protected _updateClientConfiguration(serverNode: ServerNode): Promise<void>;

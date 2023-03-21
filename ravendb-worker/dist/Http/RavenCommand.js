@@ -29,7 +29,8 @@ const Exceptions_1 = require("../Exceptions");
 const HttpUtil_1 = require("../Utility/HttpUtil");
 const Serializer_1 = require("../Mapping/Json/Serializer");
 const RavenCommandResponsePipeline_1 = require("./RavenCommandResponsePipeline");
-const StreamUtil_1 = require("../Utility/StreamUtil");
+const ReadableWebToNodeStream_1 = require("../Utility/ReadableWebToNodeStream");
+const LengthUnawareFormData_1 = require("../Utility/LengthUnawareFormData");
 const log = (0, LogUtil_1.getLogger)({ module: "RavenCommand" });
 class RavenCommand {
     constructor(copy) {
@@ -103,15 +104,29 @@ class RavenCommand {
             if (requestOptions.agent) {
                 agent = requestOptions.agent;
             }
-            const optionsToUse = Object.assign(Object.assign({ body }, restOptions), { agent });
+            const bodyToUse = fetcher ? RavenCommand.maybeWrapBody(body) : body;
+            const optionsToUse = Object.assign(Object.assign({ body: bodyToUse }, restOptions), { agent });
+            const passthrough = new stream.PassThrough();
+            passthrough.pause();
             const fetchFn = fetcher !== null && fetcher !== void 0 ? fetcher : node_fetch_1.default;
             const response = yield fetchFn(uri, optionsToUse);
-            const text = yield response.text();
+            const effectiveStream = fetcher ? new ReadableWebToNodeStream_1.ReadableWebToNodeStream(response.body) : response.body;
+            effectiveStream
+                .pipe(passthrough);
             return {
                 response,
-                bodyStream: (0, StreamUtil_1.stringToReadable)(text),
+                bodyStream: passthrough
             };
         });
+    }
+    static maybeWrapBody(body) {
+        if (body instanceof LengthUnawareFormData_1.LengthUnawareFormData) {
+            throw new Error("Requests using FormData as payload are not yet supported!");
+        }
+        if (body instanceof stream.Readable) {
+            throw new Error("Requests using stream.Readable as payload are not yet supported!");
+        }
+        return body;
     }
     setResponseRaw(response, body) {
         (0, Exceptions_1.throwError)("NotSupportedException", "When _responseType is set to RAW then please override this method to handle the response.");
@@ -125,7 +140,8 @@ class RavenCommand {
         }
     }
     isFailedWithNode(node) {
-        return this.failedNodes && !!this.failedNodes.get(node);
+        return this.failedNodes
+            && !!this.failedNodes.get(node);
     }
     processResponse(cache, response, bodyStream, url) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -144,13 +160,16 @@ class RavenCommand {
                         return "Automatic";
                     }
                     const bodyPromise = this.setResponseAsync(bodyStream, false);
+                    bodyStream.resume();
                     const body = yield bodyPromise;
                     if (cache) {
+                        this._cacheResponse(cache, url, response, body);
                     }
                     return "Automatic";
                 }
                 else {
                     const bodyPromise = this.setResponseAsync(bodyStream, false);
+                    bodyStream.resume();
                     yield bodyPromise;
                 }
                 return "Automatic";
@@ -166,7 +185,14 @@ class RavenCommand {
         });
     }
     _cacheResponse(cache, url, response, responseJson) {
-        return;
+        if (!this.canCache) {
+            return;
+        }
+        const changeVector = (0, HttpUtil_1.getEtagHeader)(response);
+        if (!changeVector) {
+            return;
+        }
+        cache.set(url, changeVector, responseJson);
     }
     _addChangeVectorIfNotNull(changeVector, req) {
         if (changeVector) {
@@ -179,7 +205,7 @@ class RavenCommand {
     _parseResponseDefaultAsync(bodyStream) {
         return __awaiter(this, void 0, void 0, function* () {
             let body = null;
-            this.result = yield this._defaultPipeline((_) => (body = _)).process(bodyStream);
+            this.result = yield this._defaultPipeline(_ => body = _).process(bodyStream);
             return body;
         });
     }
@@ -192,7 +218,8 @@ class RavenCommand {
     static _throwInvalidResponse(cause) {
         (0, Exceptions_1.throwError)("InvalidOperationException", "Response is invalid: " + cause.message, cause);
     }
-    onResponseFailure(response) { }
+    onResponseFailure(response) {
+    }
     _pipeline() {
         return RavenCommandResponsePipeline_1.RavenCommandResponsePipeline.create();
     }

@@ -249,8 +249,7 @@ class TypesAwareObjectMapper {
             instance = Object.assign({}, rawValue);
         }
         else if (TypeUtil_1.TypeUtil.isClass(ctorOrTypeDescriptor)) {
-            instance = this._createEmptyObject(ctorOrTypeDescriptor);
-            instance = Object.assign(instance, rawValue);
+            instance = this.createEmptyObject(ctorOrTypeDescriptor, rawValue);
         }
         else if (TypeUtil_1.TypeUtil.isObjectLiteralTypeDescriptor(ctorOrTypeDescriptor)) {
             instance = ctorOrTypeDescriptor.construct(rawValue);
@@ -275,11 +274,11 @@ class TypesAwareObjectMapper {
         }
         return ctorOrTypeDescriptor;
     }
-    _createEmptyObject(ctor) {
+    createEmptyObject(ctor, rawValue) {
         if (!ctor) {
             (0, Exceptions_1.throwError)("InvalidArgumentException", "ctor argument must not be null or undefined.");
         }
-        return new ctor();
+        return Object.assign(new ctor(), rawValue);
     }
     _makeObjectLiteral(obj, objPathPrefix, typeInfoCallback, knownTypes, skipTypes = false) {
         if (TypeUtil_1.TypeUtil.isDate(obj)) {
@@ -319,8 +318,7 @@ class TypesAwareObjectMapper {
             }, []);
         }
         if (Array.isArray(obj)) {
-            const newObjPathPrefix = `${objPathPrefix}[]`;
-            return obj.map(x => this._makeObjectLiteral(x, newObjPathPrefix, typeInfoCallback, knownTypes));
+            return obj.map((x, index) => this._makeObjectLiteral(x, `${objPathPrefix}.${index}`, typeInfoCallback, knownTypes));
         }
         if (TypeUtil_1.TypeUtil.isObject(obj)) {
             if (objPathPrefix) {
@@ -337,11 +335,12 @@ class TypesAwareObjectMapper {
                 if (this._conventions.remoteEntityFieldNameConvention) {
                     nestedTypeInfoKey = ObjectUtil_1.ObjectUtil[this._conventions.remoteEntityFieldNameConvention](key);
                 }
+                let innerSkipTypes = skipTypes;
                 if (!skipTypes) {
-                    skipTypes = key === Constants_1.CONSTANTS.Documents.Metadata.KEY;
+                    innerSkipTypes = key === Constants_1.CONSTANTS.Documents.Metadata.KEY;
                 }
                 const fullPath = objPathPrefix ? `${objPathPrefix}.${nestedTypeInfoKey}` : nestedTypeInfoKey;
-                result[key] = this._makeObjectLiteral(obj[key], fullPath, typeInfoCallback, knownTypes, skipTypes);
+                result[key] = this._makeObjectLiteral(obj[key], fullPath, typeInfoCallback, knownTypes, innerSkipTypes);
                 return result;
             }, {});
         }

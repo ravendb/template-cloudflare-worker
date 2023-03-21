@@ -104,6 +104,13 @@ class DocumentConventions {
         this._assertNotFrozen();
         this._objectMapper = value;
     }
+    get customFetch() {
+        return this._customFetch;
+    }
+    set customFetch(customFetch) {
+        this._assertNotFrozen();
+        this._customFetch = customFetch;
+    }
     get syncJsonParseLimit() {
         return this._syncJsonParseLimit;
     }

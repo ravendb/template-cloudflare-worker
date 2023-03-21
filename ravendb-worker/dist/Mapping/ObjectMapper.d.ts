@@ -1,4 +1,4 @@
-import { ObjectTypeDescriptor } from "../Types";
+import { ObjectTypeDescriptor, EntityConstructor } from "../Types";
 import { DocumentConventions } from "../Documents/Conventions/DocumentConventions";
 export interface TypeInfo {
     typeName?: string;
@@ -32,7 +32,7 @@ export declare class TypesAwareObjectMapper implements ITypesAwareObjectMapper {
     private _applyTypeToNestedProperty;
     private _instantiateObject;
     private _getKnownType;
-    private _createEmptyObject;
+    protected createEmptyObject<TResult extends object>(ctor: EntityConstructor<TResult>, rawValue: object): TResult;
     private _makeObjectLiteral;
 }
 export interface TypesAwareJsonObjectMapperOptions {

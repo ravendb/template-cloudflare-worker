@@ -2,8 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateUri = exports.isValidUri = void 0;
 const Exceptions_1 = require("../Exceptions");
+const url = require("url");
 function isValidUri(uriString) {
-    return true;
+    const parsed = url.parse(uriString);
+    return !!(parsed.host && parsed.protocol);
 }
 exports.isValidUri = isValidUri;
 function validateUri(uriString) {

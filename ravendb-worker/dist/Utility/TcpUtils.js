@@ -11,12 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConnectSecuredTcpSocketResult = exports.TcpUtils = void 0;
 const net = require("net");
+const url_1 = require("url");
+const tls = require("tls");
 const Certificate_1 = require("../Auth/Certificate");
 const Exceptions_1 = require("../Exceptions");
 class TcpUtils {
     static connect(urlString, serverCertificate, clientCertificate) {
         return __awaiter(this, void 0, void 0, function* () {
-            const url = new URL(urlString);
+            const url = new url_1.URL(urlString);
             const host = url.hostname;
             const port = parseInt(url.port, 10);
             if (serverCertificate && clientCertificate) {
@@ -39,7 +41,10 @@ class TcpUtils {
                             return (0, Exceptions_1.getError)("AuthenticationException", "Invalid server certificate.");
                         }
                     };
-                    const socket = null;
+                    const socket = tls.connect(port, host, agentOptions, () => {
+                        socket.removeListener("error", reject);
+                        resolve(socket);
+                    });
                     socket.once("error", reject);
                     socket.setNoDelay(true);
                 });

@@ -1,5 +1,5 @@
 import { DocumentType } from "../Documents/DocumentAbstractions";
-import { ObjectTypeDescriptor } from "../Types";
+import { ObjectTypeDescriptor, ClassConstructor } from "../Types";
 export declare class TypeUtil {
     static readonly MAX_INT32 = 2147483647;
     static readonly MIN_INT32 = -2147483648;
@@ -16,7 +16,7 @@ export declare class TypeUtil {
     static isFunction(value: any): value is Function;
     static isDate(value: any): value is Date;
     static isBool(value: any): value is boolean;
-    static isClass(value: any): boolean;
+    static isClass(value: any): value is ClassConstructor;
     static isObjectTypeDescriptor(value: any): value is ObjectTypeDescriptor;
     static isType(obj: object, typeDescriptor: DocumentType): boolean;
     static isObjectLiteralTypeDescriptor(typeDescriptor: ObjectTypeDescriptor): boolean;
