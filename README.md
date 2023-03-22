@@ -34,6 +34,38 @@ $ npm start
 
 Watch the [video tutorial][docs-howto-video] or read through [the step-by-step guide in the RavenDB docs][docs-howto] that covers how to get up and running successfully with this template by configuring the worker to use mTLS certificates.
 
+### Database Must Exist
+
+When connecting to RavenDB, ensure the database already exists. You can create a database programmatically if you have a cluster admin certificate:
+
+Here is an example using `CreateDatabaseOperation`:
+
+```typescript
+import {
+  IDocumentStore,
+	CreateDatabaseOperation,
+	DatabaseRecord,
+	GetDatabaseRecordOperation,
+} from 'ravendb';
+
+async function createDbIfNotExists(store: IDocumentStore) {
+	const getDbOp = new GetDatabaseRecordOperation(store.database);
+	let dbRecord: DatabaseRecord = await store.maintenance.send(getDbOp);
+
+	if (!dbRecord) {
+		dbRecord = {
+			databaseName: store.database,
+		};
+
+		const createResult = await store.maintenance.send(new CreateDatabaseOperation(dbRecord));
+
+		if (createResult?.name) {
+			console.log('Automatically created database that did not exist: ' + createResult.name);
+		}
+	}
+}
+```
+
 ### Wrangler Environment Variables
 
 In `wrangler.toml`:

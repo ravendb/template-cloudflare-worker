@@ -4,14 +4,16 @@ import { DocumentStore } from 'ravendb';
 let store: DocumentStore;
 let initialized = false;
 
-export function initializeDb(
-	urls: string[],
-	dbName: string,
-	fetchBinding?: { fetch: typeof fetch }
-) {
+interface InitializeOptions {
+	urls: string[];
+	databaseName: string;
+	fetchBinding?: { fetch: typeof fetch };
+}
+
+export async function initializeDb({ urls, databaseName, fetchBinding }: InitializeOptions) {
 	if (initialized) return store;
 
-	store = new DocumentStore(urls, dbName);
+	store = new DocumentStore(urls, databaseName);
 
 	// Support for Cloudflare mTLS bindings
 	if (fetchBinding) {

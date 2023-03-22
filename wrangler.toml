@@ -18,5 +18,5 @@ DB_NAME = ""
 [env.production]
 name = "ravendb-worker-production"
 [env.production.vars]
-DB_URLS = "http://live-test.ravendb.net"
+DB_URLS = ""
 DB_NAME = ""
