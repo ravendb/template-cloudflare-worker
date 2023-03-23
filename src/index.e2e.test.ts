@@ -18,11 +18,19 @@ describe('Worker', () => {
 	});
 
 	afterAll(async () => {
-		await worker.stop();
+		try {
+			await worker.stop();
+		} catch (err) {
+			expect(err).toBeNull();
+		}
 	});
 
 	it('should return 200 response', async () => {
-		const resp = await worker.fetch('http://falcon', { method: 'GET' });
-		expect(resp.status).toBe(200);
+		try {
+			const resp = await worker.fetch('http://falcon', { method: 'GET' });
+			expect(resp.status).toBe(200);
+		} catch (err) {
+			expect(err).toBeNull();
+		}
 	});
 });
