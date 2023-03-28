@@ -1,7 +1,0 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.TypedTimeSeriesAggregationResult = void 0;
-const TimeSeriesQueryResult_1 = require("./TimeSeriesQueryResult");
-class TypedTimeSeriesAggregationResult extends TimeSeriesQueryResult_1.TimeSeriesQueryResult {
-}
-exports.TypedTimeSeriesAggregationResult = TypedTimeSeriesAggregationResult;

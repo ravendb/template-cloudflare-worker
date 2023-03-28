@@ -1,6 +1,0 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.IndexFieldOptions = void 0;
-class IndexFieldOptions {
-}
-exports.IndexFieldOptions = IndexFieldOptions;

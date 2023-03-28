@@ -9,7 +9,7 @@
 	},
 	"dependencies": {
 		"itty-router": "^3.0.11",
-		"ravendb": "file:ravendb-worker"
+		"ravendb": "^5.2.8"
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "^4.20230115.0",
