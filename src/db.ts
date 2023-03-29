@@ -30,12 +30,7 @@ interface InitializeOptions {
 	customize?: (c: DocumentConventions) => void;
 }
 
-export async function initializeDb({
-	urls,
-	databaseName,
-	mtlsBinding,
-	customize,
-}: InitializeOptions) {
+export function initializeDb({ urls, databaseName, mtlsBinding, customize }: InitializeOptions) {
 	if (initialized) return store;
 
 	store = new DocumentStore(urls, databaseName);
@@ -69,34 +64,17 @@ export function openDbSession(opts?: SessionOptions) {
 	return store.openSession();
 }
 
-let buildInfo: BuildNumber | undefined;
+export function initializeWelcomeDb() {
+	if (initialized) return store;
+	
+	store = new DocumentStore(['http://live-test.ravendb.net'], 'default');
 
-export async function initializeWelcomeDb() {
-	if (!initialized) {
-		store = new DocumentStore(['http://live-test.ravendb.net'], 'default');
+	store.conventions.customFetch = fetch;
+	store.conventions.disableTopologyUpdates = true;
 
-		store.conventions.customFetch = fetch;
-		store.conventions.disableTopologyUpdates = true;
+	store.initialize();
 
-		store.initialize();
+	initialized = true;
 
-		buildInfo = await getBuildInfo(store);
-
-		initialized = true;
-	}
-
-	return {
-		url: store.urls[0],
-		buildInfo,
-		database: undefined,
-	};
-}
-
-async function getBuildInfo(store: IDocumentStore) {
-	try {
-		return await store.maintenance.send(new GetBuildNumberOperation());
-	} catch (error) {
-		/* Ignore when we cannot auto-create the database */
-		return undefined;
-	}
+	return store;
 }
