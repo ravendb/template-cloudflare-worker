@@ -4,15 +4,13 @@ import { Env } from './types';
 
 const router = Router();
 
-router.all('*', withDb as any);
+router.all('*', withDb());
 
 router.get('/', async (request: IRequest, env: Env) => {
 	const currentNode = await env.db.advanced.getCurrentSessionNode();
 
 	return new Response(
-		`Request method: ${request.method}, CF data center: ${request.cf?.colo} (${
-			(request.cf as any)?.regionCode
-		}), Connected to RavenDB node: ${currentNode?.clusterTag}`
+		`Request method: ${request.method}, CF data center: ${request.cf?.colo} (${request.cf?.regionCode}), Connected to RavenDB: ${currentNode?.database} (Tag: ${currentNode?.clusterTag})`
 	);
 });
 
