@@ -2,13 +2,13 @@
 
 [![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/ravendb/template-cloudflare-worker) [![Open on StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)][stackblitz]
 
-A batteries included template for kick starting a TypeScript Cloudflare worker project that connects with a RavenDB Cloud database backend.
+A batteries included template for kick starting a TypeScript Cloudflare worker project that connects to a hosted RavenDB database.
 
-[RavenDB][cloud-signup] is a business continuity database for distributed applications offering industry-leading security with sub-100ms query performance.
+[RavenDB][cloud-signup] is a NoSQL document database for distributed applications offering industry-leading security without compromising performance. With a RavenDB database you can set up a NoSQL data architecture or add a NoSQL layer to your current relational database.
 
-> The easiest way to get started with RavenDB is by creating [a free RavenDB Cloud account](cloud-signup).
+> The easiest way to get started with RavenDB is by creating [a free RavenDB Cloud account][cloud-signup] or requesting a free license to [download it yourself][download].
 >
-> If you are _brand new_ to RavenDB, we recommend starting with the [Getting Started guide](docs-get-started), the [RavenDB bootcamp](learn-bootcamp), or the [Try RavenDB](learn-demo) experience.
+> If you are _brand new_ to RavenDB, we recommend starting with the [Getting Started guide][docs-get-started], the [RavenDB bootcamp][learn-bootcamp], or the [Try RavenDB][learn-demo] experience.
 
 ## How to Use This Template
 
@@ -87,6 +87,7 @@ $ npx wrangler mtls-certificate upload --cert cert.pem --key key.pem --name cert
 
 [stackblitz]: https://stackblitz.com/github/ravendb/template-cloudflare-worker
 [cloud-signup]: https://cloud.ravendb.net?utm_source=github&utm_medium=web&utm_campaign=github_template_cloudflare_worker&utm_content=cloud_signup
+[download]: https://ravendb.net/download?utm_source=github&utm_medium=web&utm_campaign=github_template_cloudflare_worker&utm_content=download
 [docs-get-started]: https://ravendb.net/docs/article-page/csharp/start/getting-started?utm_source=github&utm_medium=web&utm_campaign=github_template_cloudflare_worker&utm_content=docs_get_started
 [docs-create-db]: https://ravendb.net/docs/article-page/csharp/studio/database/create-new-database/general-flow?utm_source=github&utm_medium=web&utm_campaign=github_template_cloudflare_worker&utm_content=docs_new_db
 [learn-bootcamp]: https://ravendb.net/learn/bootcamp?utm_source=github&utm_medium=web&utm_campaign=github_template_cloudflare_worker&utm_content=learn_bootcamp
