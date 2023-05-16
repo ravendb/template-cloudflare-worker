@@ -34,38 +34,6 @@ $ npm start
 
 Watch the [video tutorial][docs-howto-video] or read through [the step-by-step guide in the RavenDB docs][docs-howto] that covers how to get up and running successfully with this template by configuring the worker to use mTLS certificates.
 
-### Database Must Exist
-
-When connecting to RavenDB, ensure the database already exists. You can create a database programmatically if you have a cluster admin certificate:
-
-Here is an example using `CreateDatabaseOperation`:
-
-```typescript
-import {
-  IDocumentStore,
-	CreateDatabaseOperation,
-	DatabaseRecord,
-	GetDatabaseRecordOperation,
-} from 'ravendb';
-
-async function createDbIfNotExists(store: IDocumentStore) {
-	const getDbOp = new GetDatabaseRecordOperation(store.database);
-	let dbRecord: DatabaseRecord = await store.maintenance.send(getDbOp);
-
-	if (!dbRecord) {
-		dbRecord = {
-			databaseName: store.database,
-		};
-
-		const createResult = await store.maintenance.send(new CreateDatabaseOperation(dbRecord));
-
-		if (createResult?.name) {
-			console.log('Automatically created database that did not exist: ' + createResult.name);
-		}
-	}
-}
-```
-
 ### Wrangler Environment Variables
 
 In `wrangler.toml`:
@@ -73,17 +41,28 @@ In `wrangler.toml`:
 - `DB_URLS`: Comma-separated values for your RavenDB cluster node URLs
 - `DB_NAME`: Database to connect to. **Warning:** Ensure the database exists otherwise you will receive a `DatabaseNotFoundException`.
 
+These will automatically be set during deployment and will override any settings in the Cloudflare dashboard.
+
+### Deploying to Cloudflare
+
+You can manually deploy through the Wrangler CLI using `wrangler deploy` but the template is automatically configured for CI/CD using GitHub Actions workflows. You will need the following secrets:
+
+- `CF_API_TOKEN` -- The API token secret for your deployment. Requires access to workers.
+- `CF_ACCOUNT_ID` -- Your global Cloudflare account ID
+
+These are set automatically if using the Cloudflare Worker Deployment wizard.
+
 ### mTLS Certificates
 
-Obtain your RavenDB client certificate from the Cloud dashboard, Manage Server > Certificates in the Studio, or the Raven Admin CLI.
+Obtain your RavenDB client certificate from the Cloud dashboard, Manage Server > Certificates in the Studio, or the Raven Admin CLI. You will need the `.crt` (public key) and `.key` (private key) files.
 
-> **IMPORTANT:** The `.pem` file in the RavenDB client certificate package contains the RSA private key and that may need to be removed in earlier versions of Wrangler to successfully parse the file.
-
-Follow the [Cloudflare mTLS for Workers][cf-workers-mtls] documentation to upload and specify the `<CERTIFICATE_ID`> in the `wrangler.toml` for the `DB_CERT` binding.
+Upload the mTLS certificate using `wrangler`:
 
 ```sh
-$ npx wrangler mtls-certificate upload --cert cert.pem --key key.pem --name cert_name
+$ npx wrangler mtls-certificate upload --cert cert.crt --key key.key --name cert_name
 ```
+
+This will output your `<CERTIFICATE_ID>` to use in your `wrangler.toml` file for the `DB_CERT` binding. See the [Cloudflare mTLS for Workers][cf-workers-mtls] documentation for more.
 
 [stackblitz]: https://stackblitz.com/github/ravendb/template-cloudflare-worker
 [cloud-signup]: https://cloud.ravendb.net?utm_source=github&utm_medium=web&utm_campaign=github_template_cloudflare_worker&utm_content=cloud_signup
