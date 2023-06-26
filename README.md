@@ -32,7 +32,7 @@ $ npm start
 
 ### Configure the Template
 
-Watch the [video tutorial][docs-howto-video] or read through [the step-by-step guide in the RavenDB docs][docs-howto] that covers how to get up and running successfully with this template by configuring the worker to use mTLS certificates.
+Read through [the step-by-step guide in the RavenDB docs][docs-howto] that covers how to get up and running successfully with this template by configuring the worker to use mTLS certificates.
 
 ### Wrangler Environment Variables
 
