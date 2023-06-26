@@ -71,6 +71,6 @@ This will output your `<CERTIFICATE_ID>` to use in your `wrangler.toml` file for
 [docs-create-db]: https://ravendb.net/docs/article-page/csharp/studio/database/create-new-database/general-flow?utm_source=github&utm_medium=web&utm_campaign=github_template_cloudflare_worker&utm_content=docs_new_db
 [learn-bootcamp]: https://ravendb.net/learn/bootcamp?utm_source=github&utm_medium=web&utm_campaign=github_template_cloudflare_worker&utm_content=learn_bootcamp
 [learn-demo]: https://demo.ravendb.net/?utm_source=github&utm_medium=web&utm_campaign=github_template_cloudflare_worker&utm_content=learn_demo
-[docs-howto]: https://ravendb.net/docs/article-page/nodejs/getting-started/platform-guides/cloudflare-workers/overview?utm_source=github&utm_medium=web&utm_campaign=github_template_cloudflare_worker&utm_content=docs_howto
+[docs-howto]: https://ravendb.net/docs/article-page/nodejs/getting-started/guides/cloudflare-workers/overview?utm_source=github&utm_medium=web&utm_campaign=github_template_cloudflare_worker&utm_content=docs_howto
 [docs-howto-video]: #tbd
 [cf-workers-mtls]: https://developers.cloudflare.com/workers/runtime-apis/mtls/
